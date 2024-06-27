@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     recommendationItem: {
         width: 120,
         marginRight: 16,
-        alignItems: 'center', // Center the items horizontally
+        alignItems: 'center', 
     },
     recommendationPoster: {
         width: 100,
