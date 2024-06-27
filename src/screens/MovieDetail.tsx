@@ -7,7 +7,8 @@ import { API_URL, API_ACCESS_TOKEN } from '@env';
 const MovieDetail = (): JSX.Element => {
     const route = useRoute();
     const navigation = useNavigation();
-    const { id } = route.params as { id: string };
+    //const { id } = route.params as { id: string };
+    const { id, title, poster_path, overview } = route.params; // cara menerima data yang benar
 
     const [movie, setMovie] = useState<any>(null);
     const [recommendations, setRecommendations] = useState<any[]>([]);
@@ -59,6 +60,7 @@ const MovieDetail = (): JSX.Element => {
                 <Text style={styles.detailsText}>Release Date: {movie.release_date}</Text>
                 <Text style={styles.detailsText}>Popularity: {movie.popularity}</Text>
                 <Text style={styles.detailsText}>Vote Count: {movie.vote_count}</Text>
+                <Text style={styles.detailsText}>Vote Count: {id}</Text>
             </View>
             <Text style={styles.recommendationsTitle}>Recommendations</Text>
             <FlatList
