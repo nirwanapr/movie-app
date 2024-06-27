@@ -1,6 +1,7 @@
 # Tugas Akhir Movie App
-** Nirwana Pratiwi **
-** 1957887840-576 **
+**Nirwana Pratiwi**
+
+**1957887840-576**
 
 ## Tujuan
 - Mengimplementasikan ilmu yang didapatkan selama self-paced learning dengan Progate dan sesi live dengan Zoom.
