@@ -24,7 +24,7 @@
 - Favorite: untuk menampilkan film-film yang difavoritkan.
 - Search: untuk mencari film yang diinginkan berdasarkan keyword tertentu.
 
-### Teknologi yang digunakan
+### Modul yang digunakan
 - React
 - React Navigation
 - AsyncStorage
