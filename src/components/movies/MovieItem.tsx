@@ -7,7 +7,8 @@ import type { MovieItemProps } from '../../types/app'
 
 const MovieItem = ({ movie, size, coverType }: MovieItemProps): JSX.Element => {
   const navigation = useNavigation()
-  const pushAction = StackActions.push('MovieDetail', { id: movie.id })
+  const pushAction = StackActions.push('MovieDetail', { id: movie.id, poster_path: movie.poster_path, overview: movie.overview, title: movie.title})
+  // cara mengirim informasi
   return (
     <TouchableOpacity
      onPress={() => {
