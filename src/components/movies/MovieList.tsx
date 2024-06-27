@@ -4,6 +4,7 @@ import type { MovieListProps, Movie } from '../../types/app'
 import { API_ACCESS_TOKEN } from '@env'
 import MovieItem from './MovieItem'
 
+
 const coverImageSize = {
   backdrop: {
     width: 280,
@@ -19,10 +20,6 @@ const MovieList = ({ title, path, coverType }: MovieListProps): JSX.Element => {
   const [movies, setMovies] = useState<Movie[]>([])
 
   useEffect(() => {
-    getMovieList()
-  }, [])
-
-  const getMovieList = (): void => {
     const url = `https://api.themoviedb.org/3/${path}`
     const options = {
       method: 'GET',
@@ -31,16 +28,18 @@ const MovieList = ({ title, path, coverType }: MovieListProps): JSX.Element => {
         Authorization: `Bearer ${API_ACCESS_TOKEN}`,
       },
     }
-
     fetch(url, options)
-      .then(async (response) => await response.json())
-      .then((response) => {
-        setMovies(response.results)
-      })
-      .catch((errorResponse) => {
-        console.log(errorResponse)
-      })
-  }
+    .then(async (response) => await response.json())
+    .then((response) => {
+      setMovies(response.results)
+      
+    })
+    .catch((errorResponse) => {
+      console.log(errorResponse)
+    })
+
+console.log(movies)
+}, [])
 
   return (
     <View>
