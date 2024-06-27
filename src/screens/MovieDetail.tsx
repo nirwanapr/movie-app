@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 import { useRoute, useNavigation, StackActions } from '@react-navigation/native';
 import axios from 'axios';
 import { API_URL, API_ACCESS_TOKEN } from '@env';
@@ -8,7 +8,8 @@ const MovieDetail = (): JSX.Element => {
     const route = useRoute();
     const navigation = useNavigation();
     //const { id } = route.params as { id: string };
-    const { id, title, poster_path, overview } = route.params; // cara menerima data yang benar
+    // const { id, title, poster_path, overview } = route.params; // cara menerima data yang benar
+    const { id, original_language, release_date, popularity, vote_count, poster_path, backdrop_path, title, overview} = route.params;
 
     const [movie, setMovie] = useState<any>(null);
     const [recommendations, setRecommendations] = useState<any[]>([]);
@@ -47,20 +48,23 @@ const MovieDetail = (): JSX.Element => {
         navigation.dispatch(StackActions.push('MovieDetail', { id: movieId }));
     };
 
+    const { width: screenWidth } = Dimensions.get('window');
+    const posterWidth = screenWidth * 0.1; // 50% of screen width
+    const posterHeight = posterWidth * 1.5; // Maintain aspect ratio
+
     return (
         <ScrollView style={styles.container}>
             <Image
-                source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
-                style={styles.poster}
+                source={{ uri: `https://image.tmdb.org/t/p/w500${poster_path}` }}
+                style={[styles.poster, { width: posterWidth, height: posterHeight }]}
             />
-            <Text style={styles.title}>{movie.title}</Text>
-            <Text style={styles.overview}>{movie.overview}</Text>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.overview}>{overview}</Text>
             <View style={styles.detailsContainer}>
-                <Text style={styles.detailsText}>Original Language: {movie.original_language}</Text>
-                <Text style={styles.detailsText}>Release Date: {movie.release_date}</Text>
-                <Text style={styles.detailsText}>Popularity: {movie.popularity}</Text>
-                <Text style={styles.detailsText}>Vote Count: {movie.vote_count}</Text>
-                <Text style={styles.detailsText}>Vote Count: {id}</Text>
+                <Text style={styles.detailsText}>Original Language: {original_language}</Text>
+                <Text style={styles.detailsText}>Release Date: {release_date}</Text>
+                <Text style={styles.detailsText}>Popularity: {popularity}</Text>
+                <Text style={styles.detailsText}>Vote Count: {vote_count}</Text>
             </View>
             <Text style={styles.recommendationsTitle}>Recommendations</Text>
             <FlatList
@@ -69,10 +73,10 @@ const MovieDetail = (): JSX.Element => {
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => navigateToDetail(item.id)} style={styles.recommendationItem}>
                         <Image
-                            source={{ uri: `https://image.tmdb.org/t/p/w200${item.poster_path}` }}
+                            source={{ uri: `https://image.tmdb.org/t/p/w200${item.poster_path}` }} // Corrected access to item.poster_path
                             style={styles.recommendationPoster}
                         />
-                        <Text style={styles.recommendationTitle}>{item.title}</Text>
+                        <Text style={styles.recommendationTitle}>{item.title}</Text> {/* Corrected access to item.title */}
                     </TouchableOpacity>
                 )}
                 keyExtractor={(item) => item.id.toString()}
@@ -87,8 +91,8 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     poster: {
-        width: '100%',
-        height: 500,
+        width: '50%',
+        height: '50%',
         resizeMode: 'cover',
     },
     title: {
