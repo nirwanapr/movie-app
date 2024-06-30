@@ -7,9 +7,7 @@ import { API_URL, API_ACCESS_TOKEN } from '@env';
 const MovieDetail = (): JSX.Element => {
     const route = useRoute();
     const navigation = useNavigation();
-    //const { id } = route.params as { id: string };
-    // const { id, title, poster_path, overview } = route.params; // cara menerima data yang benar
-    const { id, original_language, release_date, popularity, vote_count, poster_path, backdrop_path, title, overview} = route.params;
+    const { id, original_language, release_date, popularity, vote_count, poster_path, backdrop_path, title, overview } = route.params;
 
     const [movie, setMovie] = useState<any>(null);
     const [recommendations, setRecommendations] = useState<any[]>([]);
@@ -17,20 +15,20 @@ const MovieDetail = (): JSX.Element => {
     useEffect(() => {
         const fetchMovieData = async () => {
             try {
-                const movieResponse = await axios.get(`${API_URL}/movie/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${API_ACCESS_TOKEN}`,
-                    },
-                });
-                console.log('Movie data:', movieResponse.data); // Debugging line
-                setMovie(movieResponse.data);
+                if (!movie) {
+                    const movieResponse = await axios.get(`${API_URL}/movie/${id}`, {
+                        headers: {
+                            Authorization: `Bearer ${API_ACCESS_TOKEN}`,
+                        },
+                    });
+                    setMovie(movieResponse.data);
+                }
 
                 const recommendationsResponse = await axios.get(`${API_URL}/movie/${id}/recommendations`, {
                     headers: {
                         Authorization: `Bearer ${API_ACCESS_TOKEN}`,
                     },
                 });
-                console.log('Recommendations data:', recommendationsResponse.data.results); // Debugging line
                 setRecommendations(recommendationsResponse.data.results);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -44,13 +42,23 @@ const MovieDetail = (): JSX.Element => {
         return <Text>Loading...</Text>;
     }
 
-    const navigateToDetail = (movieId: string) => {
-        navigation.dispatch(StackActions.push('MovieDetail', { id: movieId }));
+    const navigateToDetail = (movie: any) => {
+        navigation.dispatch(StackActions.push('MovieDetail', {
+            id: movie.id,
+            title: movie.title,
+            overview: movie.overview,
+            original_language: movie.original_language,
+            release_date: movie.release_date,
+            popularity: movie.popularity,
+            vote_count: movie.vote_count,
+            poster_path: movie.poster_path,
+            backdrop_path: movie.backdrop_path
+        }));
     };
 
     const { width: screenWidth } = Dimensions.get('window');
-    const posterWidth = screenWidth * 0.1; // 50% of screen width
-    const posterHeight = posterWidth * 1.5; // Maintain aspect ratio
+    const posterWidth = screenWidth * 0.1; // Adjust as needed
+    const posterHeight = posterWidth * 1.5;
 
     return (
         <ScrollView style={styles.container}>
@@ -71,12 +79,12 @@ const MovieDetail = (): JSX.Element => {
                 horizontal
                 data={recommendations}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => navigateToDetail(item.id)} style={styles.recommendationItem}>
+                    <TouchableOpacity onPress={() => navigateToDetail(item)} style={styles.recommendationItem}>
                         <Image
-                            source={{ uri: `https://image.tmdb.org/t/p/w200${item.poster_path}` }} // Corrected access to item.poster_path
+                            source={{ uri: `https://image.tmdb.org/t/p/w200${item.poster_path}` }}
                             style={styles.recommendationPoster}
                         />
-                        <Text style={styles.recommendationTitle}>{item.title}</Text> {/* Corrected access to item.title */}
+                        <Text style={styles.recommendationTitle}>{item.title}</Text>
                     </TouchableOpacity>
                 )}
                 keyExtractor={(item) => item.id.toString()}
@@ -119,7 +127,7 @@ const styles = StyleSheet.create({
     recommendationItem: {
         width: 120,
         marginRight: 16,
-        alignItems: 'center', 
+        alignItems: 'center',
     },
     recommendationPoster: {
         width: 100,
