@@ -105,7 +105,7 @@ const Search = () => {
             value={query}
             onChangeText={setQuery}
           />
-          <Button title="Search" onPress={searchMoviesByKeyword} />
+          <Button color={'#B39CD0'} title="Search" onPress={searchMoviesByKeyword} />
         </View>
       ) : (
         <View>
@@ -118,7 +118,7 @@ const Search = () => {
               <Picker.Item key={genre.id} label={genre.name} value={genre.id.toString()} />
             ))}
           </Picker>
-          <Button title="Search" onPress={searchMoviesByGenre} />
+          <Button color={'#B39CD0'} title="Search" onPress={searchMoviesByGenre} />
         </View>
       )}
       {loading ? (
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
   },
   activeTab: {
-    backgroundColor: 'blue',
+    backgroundColor: '#B39CD0',
   },
   tabText: {
     color: 'white',
