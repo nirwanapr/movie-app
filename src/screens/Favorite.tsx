@@ -29,7 +29,6 @@ const Favorite = (): JSX.Element => {
           <Image source={{ uri: `https://image.tmdb.org/t/p/w200${item.poster_path}` }} style={styles.moviePoster} />
           <View style={styles.movieInfo}>
             <Text style={styles.movieTitle}>{item.title}</Text>
-            <Text style={styles.movieOverview} numberOfLines={2}>{item.overview}</Text>
           </View>
         </TouchableOpacity>
       )}

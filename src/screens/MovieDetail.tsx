@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useRoute, useNavigation, StackActions } from '@react-navigation/native';
 import axios from 'axios';
 import { API_URL, API_ACCESS_TOKEN } from '@env';
 import { Movie } from '../types/app';
 import { FavoriteStackParamList } from '../navigations/FavoriteStackNavigation';
-import { useFavorites } from '../context/FavoriteContext'; 
+import { useFavorites } from '../context/FavoriteContext';
 
 type MovieDetailRouteProp = RouteProp<FavoriteStackParamList, 'MovieDetail'>;
 
@@ -16,12 +16,11 @@ const MovieDetail = (): JSX.Element => {
     id, original_language, release_date, popularity, vote_count, poster_path, backdrop_path, title, overview,
   } = route.params;
 
-  const { addFavorite, removeFavorite, isFavorite } = useFavorites(); 
+  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
 
   const [movie, setMovie] = useState<Movie | null>(null);
   const [recommendations, setRecommendations] = useState<Movie[]>([]);
 
- 
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
@@ -46,11 +45,9 @@ const MovieDetail = (): JSX.Element => {
     fetchMovieData();
   }, [id]);
 
-
   if (!movie) {
     return <Text>Loading...</Text>;
   }
-
 
   const handleFavoriteToggle = () => {
     if (isFavorite(id)) {
@@ -61,7 +58,6 @@ const MovieDetail = (): JSX.Element => {
       });
     }
   };
-
 
   const navigateToDetail = (movie: Movie) => {
     navigation.dispatch(StackActions.push('MovieDetail', {
@@ -81,17 +77,16 @@ const MovieDetail = (): JSX.Element => {
     <ScrollView style={styles.container}>
       <Image
         source={{ uri: `https://image.tmdb.org/t/p/w500${poster_path}` }}
-        style={[styles.poster, { width: '100%', maxWidth: 300, height: 450 }]} 
+        style={[styles.poster, { width: '100%', maxWidth: 300, height: 450 }]}
       />
-      <Text style={styles.title}>{title}</Text>
-
-      {/* Favorite Button */}
-      <TouchableOpacity onPress={handleFavoriteToggle} style={styles.favoriteButton}>
-        <Text style={{ fontSize: 24 }}>
-          {isFavorite(id) ? '❤️' : '🤍'}
-        </Text>
-      </TouchableOpacity>
-
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{title}</Text>
+        <TouchableOpacity onPress={handleFavoriteToggle} style={styles.favoriteButton}>
+          <Text style={{ fontSize: 24 }}>
+            {isFavorite(id) ? '❤️' : '🤍'}
+          </Text>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.overview}>{overview}</Text>
       <View style={styles.detailsContainer}>
         <Text style={styles.detailsText}>Original Language: {original_language}</Text>
@@ -100,7 +95,6 @@ const MovieDetail = (): JSX.Element => {
         <Text style={styles.detailsText}>Vote Count: {vote_count}</Text>
       </View>
 
-      
       <Text style={styles.recommendationsTitle}>Recommendations</Text>
       <FlatList
         horizontal
@@ -127,21 +121,25 @@ const styles = StyleSheet.create({
   },
   poster: {
     width: '100%',
-    maxWidth: 300, 
-    height: 450, 
+    maxWidth: 300,
+    height: 450,
     resizeMode: 'cover',
     alignSelf: 'center',
     borderRadius: 8,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 16,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginVertical: 8,
+    flex: 1,
   },
   favoriteButton: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
+    marginLeft: 16,
   },
   overview: {
     fontSize: 16,
