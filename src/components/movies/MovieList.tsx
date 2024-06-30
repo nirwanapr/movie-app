@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
-import type { MovieListProps, Movie } from '../../types/app'
-import { API_ACCESS_TOKEN } from '@env'
-import MovieItem from './MovieItem'
-
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+import type { MovieListProps, Movie } from '../../types/app';
+import { API_ACCESS_TOKEN } from '@env';
+import MovieItem from './MovieItem';
 
 const coverImageSize = {
   backdrop: {
@@ -14,35 +13,32 @@ const coverImageSize = {
     width: 100,
     height: 160,
   },
-}
+};
 
 const MovieList = ({ title, path, coverType }: MovieListProps): JSX.Element => {
-  const [movies, setMovies] = useState<Movie[]>([])
+  const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-    const url = `https://api.themoviedb.org/3/${path}`
+    const url = `https://api.themoviedb.org/3/${path}`;
     const options = {
       method: 'GET',
       headers: {
         accept: 'application/json',
         Authorization: `Bearer ${API_ACCESS_TOKEN}`,
       },
-    }
+    };
     fetch(url, options)
-    .then(async (response) => await response.json())
-    .then((response) => {
-      setMovies(response.results)
-      
-    })
-    .catch((errorResponse) => {
-      console.log(errorResponse)
-    })
-
-console.log(movies)
-}, [])
+      .then(async (response) => await response.json())
+      .then((response) => {
+        setMovies(response.results);
+      })
+      .catch((errorResponse) => {
+        console.log(errorResponse);
+      });
+  }, [path]);
 
   return (
-    <View>
+    <View style={styles.movieListContainer}>
       <View style={styles.header}>
         <View style={styles.purpleLabel}></View>
         <Text style={styles.title}>{title}</Text>
@@ -65,10 +61,14 @@ console.log(movies)
         keyExtractor={(item) => item.id.toString()}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
+  movieListContainer: {
+    width: '100%', 
+    paddingLeft: 8, 
+  },
   header: {
     marginLeft: 6,
     display: 'flex',
@@ -90,6 +90,6 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
     marginTop: 8,
   },
-})
+});
 
-export default MovieList
+export default MovieList;

@@ -7,9 +7,7 @@ import type { MovieItemProps } from '../../types/app';
 
 const MovieItem = ({ movie, size, coverType }: MovieItemProps): JSX.Element => {
   const navigation = useNavigation();
-  // const pushAction = StackActions.push('MovieDetail', { id: movie.id, poster_path: movie.poster_path, overview: movie.overview, title: movie.title})
-  // // cara mengirim informasi
-
+  
   const pushAction = StackActions.push('MovieDetail', { 
     id: movie.id, 
     title: movie.title, 
@@ -22,7 +20,6 @@ const MovieItem = ({ movie, size, coverType }: MovieItemProps): JSX.Element => {
     backdrop_path: movie.backdrop_path 
   });
 
-  // Ensure vote_average is defined and a valid number
   const voteAverage = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
 
   return (
@@ -41,13 +38,15 @@ const MovieItem = ({ movie, size, coverType }: MovieItemProps): JSX.Element => {
       >
         <LinearGradient
           colors={['#00000000', 'rgba(0, 0, 0, 0.7)']}
-          locations={[0.6, 0.8]}
+          locations={[0.6, 1.0]} // Adjusted gradient locations
           style={styles.gradientStyle}
         >
-          <Text style={styles.movieTitle}>{movie.title}</Text>
-          <View style={styles.ratingContainer}>
-            <FontAwesome name="star" size={16} color="yellow" />
-            <Text style={styles.rating}>{voteAverage}</Text>
+          <View style={styles.textContainer}>
+            <Text style={styles.movieTitle}>{movie.title}</Text>
+            <View style={styles.ratingContainer}>
+              <FontAwesome name="star" size={16} color="yellow" />
+              <Text style={styles.rating}>{voteAverage}</Text>
+            </View>
           </View>
         </LinearGradient>
       </ImageBackground>
@@ -62,9 +61,6 @@ const styles = StyleSheet.create({
   backgroundImageStyle: {
     borderRadius: 8,
   },
-  movieTitle: {
-    color: 'white',
-  },
   gradientStyle: {
     padding: 8,
     height: '100%',
@@ -73,14 +69,27 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  textContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    paddingVertical: 13, 
+  },
+  movieTitle: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
   ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2,
+    marginTop: 4,
+    padding: 4,
+    borderRadius: 4,
   },
   rating: {
     color: 'yellow',
     fontWeight: '700',
+    marginLeft: 4,
   },
 });
 
