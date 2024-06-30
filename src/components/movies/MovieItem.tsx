@@ -38,7 +38,7 @@ const MovieItem = ({ movie, size, coverType }: MovieItemProps): JSX.Element => {
       >
         <LinearGradient
           colors={['#00000000', 'rgba(0, 0, 0, 0.7)']}
-          locations={[0.6, 1.0]} // Adjusted gradient locations
+          locations={[0.6, 1.0]}
           style={styles.gradientStyle}
         >
           <View style={styles.textContainer}>
